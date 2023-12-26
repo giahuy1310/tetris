@@ -2,9 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 class MainBoard extends JFrame{
     private JFrame frame;
-    private int width = 500, height = 700;
+    private int width = 500, height = 600;
     public MainBoard(){
         frame = new JFrame("Tetris");
+         frame.add(new GameArea());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setSize(width,height);
