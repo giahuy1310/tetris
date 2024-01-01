@@ -14,6 +14,7 @@ public class GameArea extends JPanel {
     {null, Color.RED, null}}
     ; 
     public GameArea(){
+        //Lopper
         looper = new Timer(500, new ActionListener(){
             int n = 0;
             @Override
@@ -29,24 +30,28 @@ public class GameArea extends JPanel {
         super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.fillRect(0,0, getWidth(), getHeight());
-
-        g.setColor(Color.WHITE);
-
-        for (int i = 0; i<BOARD_HEIGHT; i++){
-                g.drawLine(0, BLOCK_SIZE*i, BLOCK_SIZE*BOARD_WIDTH, BLOCK_SIZE*i);
-                
-            }
-        for (int j = 0; j<BOARD_WIDTH + 1; j++){
-            g.drawLine(BLOCK_SIZE*j, 0, BLOCK_SIZE*j, BLOCK_SIZE*BOARD_HEIGHT);
-        }
-
-        for (int i = 0; i< shape.length; i++){
+        //draw the shape
+         for (int i = 0; i< shape.length; i++){
             for (int j = 0; j<shape[0].length; j++){
+                if (shape[i][j]!=null){
                 g.setColor(shape[i][j]);
                 g.fillRect(i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 
         }
     }
 }
+
+
+        // draw the board
+        g.setColor(Color.WHITE);
+
+        for (int i = 0; i<BOARD_HEIGHT; i++){
+                g.drawLine(0, BLOCK_SIZE*i, BLOCK_SIZE*BOARD_WIDTH, BLOCK_SIZE*i);
+                
+            }
+        for (int j = 0; j<BOARD_WIDTH +1; j++){
+            g.drawLine(BLOCK_SIZE*j, 0, BLOCK_SIZE*j, BLOCK_SIZE*BOARD_HEIGHT);
+        }
+    }
 }
 
