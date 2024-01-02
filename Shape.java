@@ -28,7 +28,11 @@ public class Shape {
     public void setY(int y){
         this.y = y;
     }
-
+    public void reset(){
+        this.x = 4;
+        this.y = 0;
+        collision = false;
+    }
 
     public void update(){
         if (collision){
@@ -50,7 +54,13 @@ public class Shape {
         }
         deltaX = 0;
         if (System.currentTimeMillis() - beginTime > delayTimeForMovement){
+            // vertical movement
             if (!(y + 1 + coords.length > BOARD_HEIGHT)){
+                for (int row = 0 ; row < coords.length; row++){
+                    for (int col = 0; col < coords[row].length; col++){
+                        
+                    }
+                }
                 y++;
             } 
             else {

@@ -72,8 +72,7 @@ public class GameArea extends JPanel implements KeyListener {
     }
     public void setCurrentShape(){
         currentShape = shapes[1];
-        currentShape.setX(4);
-        currentShape.setY(0);
+        currentShape.reset();
     }
     @Override
     public void paintComponent(Graphics g){
@@ -82,17 +81,26 @@ public class GameArea extends JPanel implements KeyListener {
         g.fillRect(0,0, getWidth(), getHeight());
         
         currentShape.render(g);
+
+        for (int row = 0;row< board.length; row++){
+            for (int col = 0; col<board[row].length ; col++){
+                if (board[row][col] != null){
+                    g.setColor(board[row][col]);
+                    g.fillRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                }
+        }
+    }
      // draw the board
         g.setColor(Color.WHITE);
 
         for (int row = 0;row<BOARD_HEIGHT; row++){
                 g.drawLine(0, BLOCK_SIZE*row, BLOCK_SIZE*BOARD_WIDTH, BLOCK_SIZE*row);
-                
             }
         for (int col = 0; col<BOARD_WIDTH +1; col++){
             g.drawLine(BLOCK_SIZE*col, 0, BLOCK_SIZE*col, BLOCK_SIZE*BOARD_HEIGHT);
         }
     }
+
 
     public Color [] [] getBoard(){
         return board;
