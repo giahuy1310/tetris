@@ -2,56 +2,123 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.security.Key;
+import java.awt.event.KeyListener;
 
 
-public class GameArea extends JPanel {
-    private Timer looper;
+public class GameArea extends JPanel implements KeyListener {
+    private static int FPS = 60;
+    private static int delay = 1000/FPS;
+    
     public static final int BOARD_WIDTH = 10;
     public static final int BOARD_HEIGHT = 20;
     public static final int BLOCK_SIZE = 30;
-    private Color [] [] board = new Color[BOARD_WIDTH][BOARD_HEIGHT];
-    private Color [] [] shape ={{Color.RED, Color.RED, Color.RED}, 
-    {null, Color.RED, null}}
-    ; 
+    private Color [] [] board = new Color[BOARD_HEIGHT][BOARD_WIDTH];
+    private Shape [] shapes = new Shape[7];
+    private Color [] colors = {Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.PINK, Color.RED};
+
+    private Shape currentShape;
+
+
+
+    private Timer looper;
+
     public GameArea(){
+
+        // create the shapes
+        shapes[0] = new Shape (new int[][]{{1,1,1,1}}, 
+        this, colors[0]); // I shape
+        shapes[1] = new Shape (new int[][]{
+            {1,1,1},
+            {0,1,0}},
+        this, colors[1]); // T shape
+        shapes[2] = new Shape (new int[][]{
+            {1,1,1},
+            {1,0,0}},
+        this, colors[2]); // L shape
+        shapes[3] = new Shape (new int[][]{
+            {1,1,1},
+            {0,0,1}},
+        this, colors[3]); // J shape
+        shapes[4] = new Shape (new int[][]{
+            {1,1,0},
+            {0,1,1}},
+        this, colors[4]); // S shape
+        shapes[5] = new Shape (new int[][]{
+            {0,1,1},
+            {1,1,0}},
+        this, colors[5]); // Z shape
+        shapes[6] = new Shape (new int[][]{
+            {1,1},
+            {1,1}},
+        this, colors[6]); // O shape
+        
+        currentShape = shapes[0];
         //Lopper
-        looper = new Timer(500, new ActionListener(){
+        looper = new Timer(delay, new ActionListener(){
             int n = 0;
             @Override
             public void actionPerformed(ActionEvent e){
-                System.out.println(n++);
+                update();
+                repaint();
             }
         });
         looper.start();
+    }
 
+    private void update(){
+        currentShape.update();
+    }
+    public void setCurrentShape(){
+        currentShape = shapes[1];
+        currentShape.setX(4);
+        currentShape.setY(0);
     }
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.fillRect(0,0, getWidth(), getHeight());
-        //draw the shape
-         for (int i = 0; i< shape.length; i++){
-            for (int j = 0; j<shape[0].length; j++){
-                if (shape[i][j]!=null){
-                g.setColor(shape[i][j]);
-                g.fillRect(i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-
-        }
-    }
-}
-
-
-        // draw the board
+        
+        currentShape.render(g);
+     // draw the board
         g.setColor(Color.WHITE);
 
-        for (int i = 0; i<BOARD_HEIGHT; i++){
-                g.drawLine(0, BLOCK_SIZE*i, BLOCK_SIZE*BOARD_WIDTH, BLOCK_SIZE*i);
+        for (int row = 0;row<BOARD_HEIGHT; row++){
+                g.drawLine(0, BLOCK_SIZE*row, BLOCK_SIZE*BOARD_WIDTH, BLOCK_SIZE*row);
                 
             }
-        for (int j = 0; j<BOARD_WIDTH +1; j++){
-            g.drawLine(BLOCK_SIZE*j, 0, BLOCK_SIZE*j, BLOCK_SIZE*BOARD_HEIGHT);
+        for (int col = 0; col<BOARD_WIDTH +1; col++){
+            g.drawLine(BLOCK_SIZE*col, 0, BLOCK_SIZE*col, BLOCK_SIZE*BOARD_HEIGHT);
         }
     }
+
+    public Color [] [] getBoard(){
+        return board;
+    }
+    // game control
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+    @Override
+    public void keyPressed(KeyEvent e) {
+       if (e.getKeyCode() == KeyEvent.VK_S){
+             currentShape.speedUp();
+       }
+       else if (e.getKeyCode() == KeyEvent.VK_A){
+            currentShape.moveLeft();
+       }
+       else if (e.getKeyCode() == KeyEvent.VK_D){
+               currentShape.moveRight();
+       }
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_S){
+            currentShape.speedDown();
+       }
+}
 }
 
