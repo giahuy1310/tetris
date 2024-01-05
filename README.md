@@ -11,3 +11,6 @@
 #### Gia Huy:
 - Mainboard
 - Game Area
+#### Bao Khuong:
+- Mainboard
+
