@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class GameArea extends JPanel implements KeyListener {
     private static int FPS = 60;
-    private static int delay = 1000 / FPS;
+    private static int delay = 1000/FPS;
 
     public static final int BOARD_WIDTH = 10;
     public static final int BOARD_HEIGHT = 20;
@@ -123,7 +123,10 @@ public class GameArea extends JPanel implements KeyListener {
             currentShape.moveLeft();
         } else if (e.getKeyCode() == KeyEvent.VK_D) {
             currentShape.moveRight();
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            currentShape.rotateShape();
         }
+
     }
 
     @Override

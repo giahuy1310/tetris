@@ -4,7 +4,7 @@ public class Shape {
     public static final int BOARD_HEIGHT = 20;
     public static final int BLOCK_SIZE = 30;
 
-    private int x= 0, y =0;
+    private int x= 4, y =0;
     private int normal = 600;
     private int fast = 100;
     private int delayTimeForMovement = normal;
@@ -102,6 +102,31 @@ public class Shape {
             if (count < board.getBoard()[0].length){
                 bottomLine--;
             }
+        }
+    }
+
+    public void rotateShape(){
+        int [] [] rotatedShape = transposeMatrix(coords);
+        reverseRow(rotatedShape);
+
+
+        coords = rotatedShape;
+    }
+    private int [] [] transposeMatrix( int [] [] matrix){
+        int [] [] temp = new int [matrix[0].length] [matrix.length];
+        for ( int row = 0; row < matrix.length; row++){
+            for ( int col = 0; col < matrix[0].length; col++){
+                temp [col][row] = matrix [row][col];
+            }
+        }
+        return temp;
+    }
+    private void reverseRow( int [] [] matrix){
+        int middle = matrix.length /2;
+        for ( int row = 0; row < middle; row ++){
+            int [] temp = matrix[row];
+            matrix[row] = matrix[matrix.length - row - 1];
+            matrix[matrix.length - row - 1] = temp;
         }
     }
     public void render(Graphics g){
