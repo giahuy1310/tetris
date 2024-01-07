@@ -108,8 +108,19 @@ public class Shape {
     public void rotateShape(){
         int [] [] rotatedShape = transposeMatrix(coords);
         reverseRow(rotatedShape);
-
-
+        // check right side and bottom
+        if (( x + rotatedShape[0].length > BOARD_WIDTH) || (y + rotatedShape.length > BOARD_HEIGHT)){
+            return;
+        }
+        // check if collapse with other shape before rotate
+        for ( int row = 0; row < rotatedShape.length; row++){
+            for ( int col = 0; col < rotatedShape[row].length; col++){
+                if (rotatedShape[row][col]!=0 &&  (board.getBoard()[y + row][x+ col] != null)){
+                        return;
+                    
+                }
+            }
+        }
         coords = rotatedShape;
     }
     private int [] [] transposeMatrix( int [] [] matrix){
@@ -137,10 +148,18 @@ public class Shape {
                     g.setColor(this.color);
                 g.fillRect(col * BLOCK_SIZE + x * BLOCK_SIZE , row * BLOCK_SIZE + y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 
+                }
+            }
         }
-    }
-}
-    // 
+        // Draw a border around each square in the shape
+        for (int row = 0; row < coords.length; row++) {
+            for (int col = 0; col < coords[row].length; col++) {
+                if (coords[row][col] != 0) {
+                    g.setColor(Color.BLACK); // Set the border color
+                    g.drawRect((x + col) * BLOCK_SIZE, (y + row) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                }
+            }
+        }
     }
     public void speedUp(){
         delayTimeForMovement = fast;

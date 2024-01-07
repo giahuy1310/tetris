@@ -91,10 +91,14 @@ public class GameArea extends JPanel implements KeyListener {
                 if (board[row][col] != null) {
                     g.setColor(board[row][col]);
                     g.fillRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+                // Draw a border around the square
+                    g.setColor(Color.BLACK); // Set the border color
+                    g.drawRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);;
                 }
             }
         }
-        // draw the board
+            // draw the board
         g.setColor(Color.WHITE);
 
         for (int row = 0; row < BOARD_HEIGHT; row++) {
@@ -104,6 +108,9 @@ public class GameArea extends JPanel implements KeyListener {
             g.drawLine(BLOCK_SIZE * col, 0, BLOCK_SIZE * col, BLOCK_SIZE * BOARD_HEIGHT);
         }
     }
+   
+       
+    
 
     public Color[][] getBoard() {
         return board;
