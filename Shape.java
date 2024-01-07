@@ -15,7 +15,7 @@ public class Shape {
 
     private int [] [] coords;
     private GameArea board;
-    public Color color;
+    public final Color color;
     public Shape(int[][] coords, GameArea board, Color color){
         this.coords = coords;
         this.board = board;
@@ -104,7 +104,7 @@ public class Shape {
             }
         }
     }
-
+    // rotate shape
     public void rotateShape(){
         int [] [] rotatedShape = transposeMatrix(coords);
         reverseRow(rotatedShape);
@@ -161,6 +161,9 @@ public class Shape {
             }
         }
     }
+    public int [] [] getCoords(){
+        return coords;
+    }
     public void speedUp(){
         delayTimeForMovement = fast;
     }
@@ -172,5 +175,11 @@ public class Shape {
     }
     public void moveRight(){
         deltaX = 1;
+    }
+    public int getY(){
+        return y;
+    }
+    public int getX(){
+        return x;
     }
 }
