@@ -176,7 +176,7 @@ public class GameArea extends JPanel implements KeyListener {
         } else if (e.getKeyCode() == KeyEvent.VK_W){
             currentShape.rotateShape();
         } // clean the board
-         else if (state == STATE_GAME_OVER &&  (e.getKeyCode() == KeyEvent.VK_SPACE)){
+         else if (state == STATE_GAME_OVER &&  (e.getKeyCode() == KeyEvent.VK_ENTER)){
             for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                     board[row][col] = null;
@@ -186,7 +186,7 @@ public class GameArea extends JPanel implements KeyListener {
             state = STATE_GAME_PLAY;
         }
         // pause
-        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+        if (e.getKeyCode() == KeyEvent.VK_P){
             if (state == STATE_GAME_PLAY){
                 state = STATE_GAME_PAUSE;
             } else if (state == STATE_GAME_PAUSE){
@@ -203,9 +203,16 @@ public class GameArea extends JPanel implements KeyListener {
                             }
                         }).start();
                     }
-                }  
+                } 
+                
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            if(state == STATE_GAME_OVER){
+                return;
             }
-
+                currentShape.immediatelyDrop();
+                currentShape.update();
+            }
+        }
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_S) {

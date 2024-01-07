@@ -170,6 +170,21 @@ public class Shape {
     public void speedDown(){
         delayTimeForMovement = normal;
     }
+    public void immediatelyDrop() {
+        while (!collision) {
+            y++;
+            // Check for collision with the board or other shapes
+            for (int row = 0 ; row < coords.length; row++) {
+                for (int col = 0; col < coords[row].length; col++) {
+                    if (coords[row][col] != 0) {
+                        if (y + row + 1 >= BOARD_HEIGHT || board.getBoard()[y + row + 1][x + deltaX + col] != null) {
+                            collision = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
     public void moveLeft(){
         deltaX = -1;
     }
