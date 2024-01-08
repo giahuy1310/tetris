@@ -190,6 +190,7 @@ public class GameArea extends JPanel implements KeyListener {
             if (state == STATE_GAME_PLAY){
                 state = STATE_GAME_PAUSE;
             } else if (state == STATE_GAME_PAUSE){
+                if(countdown ==0){
                         countdown = 3;
                         new Timer(1000, new ActionListener() {
                             @Override
@@ -203,8 +204,10 @@ public class GameArea extends JPanel implements KeyListener {
                             }
                         }).start();
                     }
+                    return;
+                    }
                 } 
-                
+          // add drop immediately       
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
             if(state == STATE_GAME_OVER){
                 return;
