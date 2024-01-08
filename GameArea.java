@@ -73,15 +73,15 @@ public class GameArea extends JPanel implements KeyListener {
 
     public void setCurrentShape() {
         Random rand = new Random();
-        int randomShapeNum = rand.nextInt(6) + 1;
-        currentShape = shapes[randomShapeNum];
+        int randomShape = rand.nextInt(6) + 1;
+        currentShape = shapes[randomShape];
         currentShape.reset();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.white);
         g.fillRect(0, 0, getWidth(), getHeight());
 
         currentShape.render(g);
@@ -132,4 +132,5 @@ public class GameArea extends JPanel implements KeyListener {
             currentShape.speedDown();
         }
     }
+
 }
