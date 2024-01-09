@@ -71,6 +71,7 @@ public class GameArea extends JPanel implements KeyListener {
         currentShape.update();
     }
 
+    // generate random shape
     public void setCurrentShape() {
         Random rand = new Random();
         int randomShape = rand.nextInt(6) + 1;
@@ -78,10 +79,11 @@ public class GameArea extends JPanel implements KeyListener {
         currentShape.reset();
     }
 
+    // draw the background
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.white);
+        g.setColor(Color.black);
         g.fillRect(0, 0, getWidth(), getHeight());
 
         currentShape.render(g);
