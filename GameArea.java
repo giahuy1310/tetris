@@ -14,10 +14,9 @@ public class GameArea extends JPanel implements KeyListener {
     private int countdown = 0; 
 
     private int state = STATE_GAME_PLAY;
-    private String a= "Game Over";
 
     private static int FPS = 60;
-    private static int delay = 6000/FPS;
+    private static int delay = 1000/FPS;
 
     public static final int BOARD_WIDTH = 10;
     public static final int BOARD_HEIGHT = 20;
@@ -126,7 +125,7 @@ public class GameArea extends JPanel implements KeyListener {
         if (state == STATE_GAME_OVER) {
             g.setColor(Color.RED);
             g.setFont(g.getFont().deriveFont(50.0f)); // Set the font size
-            g.drawString("Game Over", BOARD_WIDTH/2,(BLOCK_SIZE * BOARD_WIDTH)/2);
+            g.drawString("Game Over", BOARD_WIDTH/2,(BLOCK_SIZE * BOARD_HEIGHT)/2);
         }
         // show game pause
         if (state == STATE_GAME_PAUSE && countdown == 0) {
@@ -134,7 +133,7 @@ public class GameArea extends JPanel implements KeyListener {
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.RED);
             g.setFont(g.getFont().deriveFont(50.0f)); // Set the font size
-            g.drawString("Game Pause", BOARD_WIDTH/2,(BLOCK_SIZE * BOARD_WIDTH)/2);
+            g.drawString("Game Pause", BOARD_WIDTH /2,(BLOCK_SIZE * BOARD_HEIGHT)/2);
         }
         // draw the board
         g.setColor(Color.WHITE);
@@ -149,7 +148,7 @@ public class GameArea extends JPanel implements KeyListener {
         if (countdown > 0) {
             g.setColor(Color.RED);
             g.setFont(g.getFont().deriveFont(35.0f));
-            g.drawString("Resuming in " + countdown + "...", BOARD_WIDTH/2, (BLOCK_SIZE * BOARD_WIDTH)/2);
+            g.drawString("Resuming in " + countdown + "...", BOARD_WIDTH/2, (BLOCK_SIZE * BOARD_HEIGHT)/2);
         }
         
     }

@@ -8,12 +8,16 @@ class MainBoard extends JFrame{
         frame = new JFrame("Tetris");
         board = new GameArea();
         frame.add(board);
+       
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setSize(width,height);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    
         frame.addKeyListener(board);
+        
+
+        frame.setVisible(true);
     }
 
     public static void main(String[] args){
