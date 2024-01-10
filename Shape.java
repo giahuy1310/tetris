@@ -47,6 +47,8 @@ public class Shape {
             checkLine();
             // set current shape
             board.setCurrentShape();
+            board.addScore();
+
             return;
         }
         // check movent horizontal
