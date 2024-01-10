@@ -12,7 +12,11 @@
 - Mainboard
 - Game Area
 - Shape
-- Title
 #### Bao Khuong:
 - Mainboard
+
+### Nhat Nam:
+ -Title
+ -Interface
+ 
 
