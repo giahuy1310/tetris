@@ -16,11 +16,11 @@ import javax.swing.Timer;
 public class Title extends JPanel implements KeyListener{
     private static final long serialVersionUID = 1L;
     private BufferedImage instructions;
-    private MainBoard mainBoard;
+    private MainBoard frame;
     private BufferedImage [] playButton = new BufferedImage[2];
     private Timer timer;
-    public Title( MainBoard frame){
-        instructions = ImageLoader.loadImage("/arrow.png");
+    public Title(MainBoard frame){
+        instructions = ImageLoader.loadImage("/wasd4.png");
         timer = new Timer(1000/60, new ActionListener(){
 
             @Override
@@ -30,7 +30,7 @@ public class Title extends JPanel implements KeyListener{
 
         });
         timer.start();
-        this.mainBoard = frame;
+        this.frame = frame;
 
     }
     public void paintComponent(Graphics g) {
@@ -38,20 +38,20 @@ public class Title extends JPanel implements KeyListener{
 
         g.setColor(Color.BLACK);
 
-        g.fillRect(0, 0, MainBoard.WIDTH, MainBoard.HEIGHT);
+        g.fillRect(0, 0, MainBoard.width, MainBoard.height);
 
 
-        g.drawImage(instructions, MainBoard.WIDTH / 2 - instructions.getWidth() / 2,
-                30 - instructions.getHeight() / 2 + 150, null);
+        g.drawImage(instructions, MainBoard.width/2 - instructions.getWidth()/2,
+                20 - instructions.getHeight() / 2 + 150, null);
 
-        g.setColor(Color.BLUE);
-        g.drawString("Press space to play!", 150, MainBoard.HEIGHT / 2 + 100);
+        g.setColor(Color.WHITE);
+        g.drawString("Press space to play!", 150, MainBoard.height / 2 + 100);
 
     }
         @Override
     public void keyTyped(KeyEvent e) {
             if(e.getKeyChar() == KeyEvent.VK_SPACE) {
-                mainBoard.startTetris();
+                frame.startTetris();
         }
     }
 

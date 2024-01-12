@@ -1,15 +1,14 @@
-import javax.swing.*;
+import javax.swing.JFrame;
 import java.awt.*;
 class MainBoard extends JFrame{
     private JFrame frame;
     private Title title ;
-    private int width = 445, height = 629;
-    private GameArea board = new GameArea();
+    public static final int  width = 445, height = 629;
+    private GameArea board  ;
     public MainBoard(){
         frame = new JFrame("Tetris");
         board = new GameArea();
         title = new Title(this);
-        frame.add(board);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setSize(width,height);
