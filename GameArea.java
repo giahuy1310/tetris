@@ -23,8 +23,8 @@ public class GameArea extends JPanel implements KeyListener {
     public static final int BLOCK_SIZE = 30;
     private Color[][] board = new Color[BOARD_HEIGHT][BOARD_WIDTH];
     private Shape[] shapes = new Shape[7];
-    private Color[] colors = { Color.decode("#00ffff"), Color.MAGENTA, Color.ORANGE, Color.decode("#0000ff"), Color.GREEN, Color.RED,
-            Color.yellow };
+    private Color[] colors = { Color.decode("#C8C3FA"), Color.decode("#FAB3F5"), Color.decode("#F9D5BD"), Color.decode("#B3F6E6"), Color.decode("#CCE9AF"), Color.decode("#FF6961"),
+            Color.decode("#FF910C") };
     private Random random;
 
     private Shape currentShape;
@@ -65,7 +65,6 @@ public class GameArea extends JPanel implements KeyListener {
         currentShape = shapes[random.nextInt(shapes.length)];
         // Lopper
         looper = new Timer(delay, new ActionListener() {
-            int n = 0;
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,15 +122,15 @@ public class GameArea extends JPanel implements KeyListener {
         }
         //show game over
         if (state == STATE_GAME_OVER) {
-            g.setColor(Color.RED);
+            g.setColor(Color.WHITE);
             g.setFont(g.getFont().deriveFont(50.0f)); // Set the font size
-            g.drawString("Game Over", BOARD_WIDTH/2,(BLOCK_SIZE * BOARD_HEIGHT)/2);
+            g.drawString("Game Over!!", BOARD_WIDTH/2,(BLOCK_SIZE * BOARD_HEIGHT)/2);
         }
         // show game pause
         if (state == STATE_GAME_PAUSE && countdown == 0) {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(Color.RED);
+            g.setColor(Color.WHITE);
             g.setFont(g.getFont().deriveFont(50.0f)); // Set the font size
             g.drawString("Game Pause", BOARD_WIDTH /2,(BLOCK_SIZE * BOARD_HEIGHT)/2);
         }
@@ -146,7 +145,7 @@ public class GameArea extends JPanel implements KeyListener {
         }
         // show count down when unpause
         if (countdown > 0) {
-            g.setColor(Color.RED);
+            g.setColor(Color.WHITE);
             g.setFont(g.getFont().deriveFont(35.0f));
             g.drawString("Resuming in " + countdown + "...", BOARD_WIDTH/2, (BLOCK_SIZE * BOARD_HEIGHT)/2);
         }
