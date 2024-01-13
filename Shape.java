@@ -203,4 +203,7 @@ public class Shape {
     public int getX(){
         return x;
     }
+    public Shape getShape(){
+        return this;
+    }
 }

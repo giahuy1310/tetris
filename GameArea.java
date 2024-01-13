@@ -27,6 +27,7 @@ public class GameArea extends JPanel implements KeyListener {
     private Color[] colors = { Color.decode("#C8C3FA"), Color.decode("#FAB3F5"), Color.decode("#F9D5BD"), Color.decode("#B3F6E6"), Color.decode("#CCE9AF"), Color.decode("#FF6961"),
             Color.decode("#FF910C") };
     private Random random;
+    private GameArea board1;
 
     private Shape currentShape;
 
@@ -85,10 +86,10 @@ public class GameArea extends JPanel implements KeyListener {
     // random new shape
     public void setNextShape(){
         nextShape = shapes[random.nextInt(shapes.length)];
-        nextShape.reset();
     }
     public void setCurrentShape() {
-        currentShape = nextShape;
+        // Create a new instance of the shape
+        currentShape = new Shape(nextShape.getCoords(), this, nextShape.getColor());
         setNextShape();
         currentShape.reset();
         checkoverGame();
@@ -178,6 +179,11 @@ private void showNextShapePreview(Graphics g) {
         }
     }
 }
+    public void startGame() {
+        setNextShape();
+        setCurrentShape();
+        state = STATE_GAME_PLAY;
+    }
     public Color[][] getBoard() {
         return board;
     }
@@ -231,7 +237,7 @@ private void showNextShapePreview(Graphics g) {
                     }
                 } 
           // add drop immediately       
-        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && state == STATE_GAME_PLAY){
             if(state == STATE_GAME_OVER){
                 return;
             }
