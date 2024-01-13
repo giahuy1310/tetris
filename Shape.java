@@ -6,7 +6,7 @@ public class Shape {
 
     private int x= 4, y =0;
     private int normal = 600;
-    private int fast = 100;
+    private int fast = 50;
     private int delayTimeForMovement = normal;
     private long beginTime;
 
@@ -46,6 +46,7 @@ public class Shape {
             }
             checkLine();
             // set current shape
+            board.setNextShape();
             board.setCurrentShape();
             return;
         }

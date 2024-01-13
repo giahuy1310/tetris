@@ -23,6 +23,7 @@ public class GameArea extends JPanel implements KeyListener {
     public static final int BLOCK_SIZE = 30;
     private Color[][] board = new Color[BOARD_HEIGHT][BOARD_WIDTH];
     private Shape[] shapes = new Shape[7];
+    private Shape nextShape;
     private Color[] colors = { Color.decode("#C8C3FA"), Color.decode("#FAB3F5"), Color.decode("#F9D5BD"), Color.decode("#B3F6E6"), Color.decode("#CCE9AF"), Color.decode("#FF6961"),
             Color.decode("#FF910C") };
     private Random random;
@@ -62,7 +63,8 @@ public class GameArea extends JPanel implements KeyListener {
                 { 1, 1 } },
                 this, colors[6]); // O shape
 
-        currentShape = shapes[random.nextInt(shapes.length)];
+       setNextShape();
+       setCurrentShape();
         // Lopper
         looper = new Timer(delay, new ActionListener() {
 
@@ -81,8 +83,12 @@ public class GameArea extends JPanel implements KeyListener {
         }
     }
     // random new shape
+    public void setNextShape(){
+        nextShape = shapes[random.nextInt(shapes.length)];
+        nextShape.reset();
+    }
     public void setCurrentShape() {
-        currentShape = shapes[random.nextInt(shapes.length)];
+        currentShape = nextShape;
         currentShape.reset();
         checkoverGame();
     }
