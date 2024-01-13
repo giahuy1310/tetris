@@ -89,6 +89,7 @@ public class GameArea extends JPanel implements KeyListener {
     }
     public void setCurrentShape() {
         currentShape = nextShape;
+        setNextShape();
         currentShape.reset();
         checkoverGame();
     }
@@ -155,14 +156,31 @@ public class GameArea extends JPanel implements KeyListener {
             g.setFont(g.getFont().deriveFont(35.0f));
             g.drawString("Resuming in " + countdown + "...", BOARD_WIDTH/2, (BLOCK_SIZE * BOARD_HEIGHT)/2);
         }
-        
+         // Draw the preview of the next shape
+        showNextShapePreview(g);
+}
+private void showNextShapePreview(Graphics g) {
+    int[][] nextShapeCoords = nextShape.getCoords();
+    Color nextShapeColor = nextShape.getColor();
+
+    // Determine the position of the preview
+    int previewX = BOARD_WIDTH + 325;  
+    int previewY = 50; 
+
+    for (int row = 0; row < nextShapeCoords.length; row++) {
+        for (int col = 0; col < nextShapeCoords[row].length; col++) {
+            if (nextShapeCoords[row][col] != 0) {
+                g.setColor(nextShapeColor);
+                g.fillRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                g.setColor(Color.BLACK); // Set the border color
+                g.drawRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            }
+        }
     }
-
-
+}
     public Color[][] getBoard() {
         return board;
     }
-
     // game control
     @Override
     public void keyTyped(KeyEvent e) {
@@ -186,6 +204,7 @@ public class GameArea extends JPanel implements KeyListener {
                     board[row][col] = null;
                 }
             }
+            setNextShape();
             setCurrentShape();
             state = STATE_GAME_PLAY;
         }

@@ -9,6 +9,7 @@ public class Shape {
     private int fast = 50;
     private int delayTimeForMovement = normal;
     private long beginTime;
+    private long endTime;
 
     private int deltaX = 0;
     private boolean collision = false;
@@ -46,7 +47,6 @@ public class Shape {
             }
             checkLine();
             // set current shape
-            board.setNextShape();
             board.setCurrentShape();
             return;
         }
@@ -67,7 +67,8 @@ public class Shape {
             }
         }
         deltaX = 0;
-        if (System.currentTimeMillis() - beginTime > delayTimeForMovement){
+        endTime = System.currentTimeMillis();
+        if (endTime - beginTime > delayTimeForMovement){
             // vertical movement
             if (!(y + 1 + coords.length > BOARD_HEIGHT)){
                 for (int row = 0 ; row < coords.length; row++){
@@ -87,7 +88,7 @@ public class Shape {
                 collision = true;
             }
         
-            beginTime = System.currentTimeMillis();
+            beginTime = endTime;
         }
     }
     private void checkLine(){
@@ -161,6 +162,10 @@ public class Shape {
                 }
             }
         }
+    }
+     //get color
+    public Color getColor(){
+        return color;
     }
     public int [] [] getCoords(){
         return coords;
