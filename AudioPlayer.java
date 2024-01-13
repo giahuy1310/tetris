@@ -12,14 +12,17 @@ public class AudioPlayer {
 
     private String soundFolder = "Background music" + File.separator;
     private String backgroundMusicPath = soundFolder + "Background-music.wav";
+    private String clearLinePath = soundFolder + "Clear-line.wav";
 
-    private Clip backgroundMusic;
+    private Clip backgroundMusic, clearLineSound;
 
     public AudioPlayer() {
         try {
             backgroundMusic = AudioSystem.getClip();
+            clearLineSound = AudioSystem.getClip();
 
             backgroundMusic.open(AudioSystem.getAudioInputStream(new File(backgroundMusicPath).getAbsoluteFile()));
+            clearLineSound.open(AudioSystem.getAudioInputStream(new File(clearLinePath).getAbsoluteFile()));
         } catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedAudioFileException ex) {
@@ -31,5 +34,10 @@ public class AudioPlayer {
 
     public void playBackground() {
         backgroundMusic.start();
+    }
+
+    public void playClearLine() {
+        clearLineSound.setFramePosition(0);
+        clearLineSound.start();
     }
 }
