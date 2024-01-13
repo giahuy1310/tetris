@@ -28,7 +28,6 @@ public class GameArea extends JPanel implements KeyListener {
             Color.decode("#B3F6E6"), Color.decode("#CCE9AF"), Color.decode("#FF6961"),
             Color.decode("#FF910C") };
     private Random random;
- 
 
     private Shape currentShape;
 
@@ -171,34 +170,40 @@ public class GameArea extends JPanel implements KeyListener {
         g.setColor(Color.WHITE);
         g.setFont(g.getFont().deriveFont(18.0f));
         g.drawString("Score: " + score, BOARD_WIDTH + 300, 200);
-}
-private void showNextShapePreview(Graphics g) {
-    int[][] nextShapeCoords = nextShape.getCoords();
-    Color nextShapeColor = nextShape.getColor();
+    }
+
+    private void showNextShapePreview(Graphics g) {
+        int[][] nextShapeCoords = nextShape.getCoords();
+        Color nextShapeColor = nextShape.getColor();
 
         // Determine the position of the preview
         int previewX = BOARD_WIDTH + 325;
         int previewY = 50;
 
-    for (int row = 0; row < nextShapeCoords.length; row++) {
-        for (int col = 0; col < nextShapeCoords[row].length; col++) {
-            if (nextShapeCoords[row][col] != 0) {
-                g.setColor(nextShapeColor);
-                g.fillRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-                g.setColor(Color.BLACK); // Set the border color
-                g.drawRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        for (int row = 0; row < nextShapeCoords.length; row++) {
+            for (int col = 0; col < nextShapeCoords[row].length; col++) {
+                if (nextShapeCoords[row][col] != 0) {
+                    g.setColor(nextShapeColor);
+                    g.fillRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    g.setColor(Color.BLACK); // Set the border color
+                    g.drawRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                }
             }
         }
     }
-}
+
     public void startGame() {
         setNextShape();
         setCurrentShape();
         state = STATE_GAME_PLAY;
     }
+
     public void increaseScore(int value) {
         score += value;
+        MainBoard.playClearLineSound();
+
     }
+
     public Color[][] getBoard() {
         return board;
     }

@@ -33,7 +33,8 @@ public class AudioPlayer {
     }
 
     public void playBackground() {
-        backgroundMusic.start();
+
+        backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public void playClearLine() {
