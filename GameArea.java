@@ -125,7 +125,10 @@ public class GameArea extends JPanel implements KeyListener {
             currentShape.moveLeft();
         } else if (e.getKeyCode() == KeyEvent.VK_D) {
             currentShape.moveRight();
+        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+            currentShape.rotateShape();
         }
+
     }
 
     @Override
