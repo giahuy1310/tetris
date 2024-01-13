@@ -28,6 +28,7 @@ class MainBoard extends JFrame{
         frame.add(board);
         board.startGame();
         frame.revalidate();
+        frame.repaint();
     }
     
     public static void main(String[] args){

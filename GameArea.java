@@ -27,11 +27,13 @@ public class GameArea extends JPanel implements KeyListener {
     private Color[] colors = { Color.decode("#C8C3FA"), Color.decode("#FAB3F5"), Color.decode("#F9D5BD"), Color.decode("#B3F6E6"), Color.decode("#CCE9AF"), Color.decode("#FF6961"),
             Color.decode("#FF910C") };
     private Random random;
-    private GameArea board1;
+ 
 
     private Shape currentShape;
 
     private Timer looper;
+
+    private int score = 0;
 
     public GameArea() {
         random = new Random();
@@ -159,6 +161,10 @@ public class GameArea extends JPanel implements KeyListener {
         }
          // Draw the preview of the next shape
         showNextShapePreview(g);
+        // Draw the score
+        g.setColor(Color.WHITE);
+        g.setFont(g.getFont().deriveFont(18.0f));
+        g.drawString("Score: " + score, BOARD_WIDTH + 300, 200);
 }
 private void showNextShapePreview(Graphics g) {
     int[][] nextShapeCoords = nextShape.getCoords();
@@ -173,7 +179,7 @@ private void showNextShapePreview(Graphics g) {
             if (nextShapeCoords[row][col] != 0) {
                 g.setColor(nextShapeColor);
                 g.fillRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-                g.setColor(Color.BLACK); // Set the border color
+                g.setColor(Color.WHITE); // Set the border color
                 g.drawRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
             }
         }
@@ -183,6 +189,9 @@ private void showNextShapePreview(Graphics g) {
         setNextShape();
         setCurrentShape();
         state = STATE_GAME_PLAY;
+    }
+    public void increaseScore(int value) {
+        score += value;
     }
     public Color[][] getBoard() {
         return board;
@@ -210,6 +219,7 @@ private void showNextShapePreview(Graphics g) {
                     board[row][col] = null;
                 }
             }
+            score = 0;
             setNextShape();
             setCurrentShape();
             state = STATE_GAME_PLAY;

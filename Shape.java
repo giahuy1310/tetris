@@ -4,6 +4,8 @@ public class Shape {
     public static final int BOARD_HEIGHT = 20;
     public static final int BLOCK_SIZE = 30;
 
+    private int score = 0;
+
     private int x= 4, y =0;
     private int normal = 600;
     private int fast = 50;
@@ -103,7 +105,7 @@ public class Shape {
             }
             if (count < board.getBoard()[0].length){
                 bottomLine--;
-            }
+            } else  board.increaseScore(100); 
         }
     }
     // rotate shape
@@ -205,5 +207,8 @@ public class Shape {
     }
     public Shape getShape(){
         return this;
+    }
+    public int getScore(){
+        return score;
     }
 }
