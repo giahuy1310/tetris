@@ -14,9 +14,11 @@
 - Shape
 #### Bao Khuong:
 - Mainboard
+- Sound Effects
 
 ### Nhat Nam:
 - Title
 - Interface
+- Mouse cotrol
 
 
