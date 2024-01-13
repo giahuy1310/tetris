@@ -11,12 +11,12 @@ public class GameArea extends JPanel implements KeyListener {
     public static int STATE_GAME_PLAY = 0;
     public static int STATE_GAME_PAUSE = 1;
     public static int STATE_GAME_OVER = 2;
-    private int countdown = 0; 
+    private int countdown = 0;
 
     private int state = STATE_GAME_PLAY;
 
     private static int FPS = 60;
-    private static int delay = 1000/FPS;
+    private static int delay = 1000 / FPS;
 
     public static final int BOARD_WIDTH = 10;
     public static final int BOARD_HEIGHT = 20;
@@ -24,7 +24,8 @@ public class GameArea extends JPanel implements KeyListener {
     private Color[][] board = new Color[BOARD_HEIGHT][BOARD_WIDTH];
     private Shape[] shapes = new Shape[7];
     private Shape nextShape;
-    private Color[] colors = { Color.decode("#C8C3FA"), Color.decode("#FAB3F5"), Color.decode("#F9D5BD"), Color.decode("#B3F6E6"), Color.decode("#CCE9AF"), Color.decode("#FF6961"),
+    private Color[] colors = { Color.decode("#C8C3FA"), Color.decode("#FAB3F5"), Color.decode("#F9D5BD"),
+            Color.decode("#B3F6E6"), Color.decode("#CCE9AF"), Color.decode("#FF6961"),
             Color.decode("#FF910C") };
     private Random random;
     private GameArea board1;
@@ -34,6 +35,7 @@ public class GameArea extends JPanel implements KeyListener {
     private Timer looper;
 
     public GameArea() {
+
         random = new Random();
 
         // create the shapes
@@ -64,8 +66,8 @@ public class GameArea extends JPanel implements KeyListener {
                 { 1, 1 } },
                 this, colors[6]); // O shape
 
-       setNextShape();
-       setCurrentShape();
+        setNextShape();
+        setCurrentShape();
         // Lopper
         looper = new Timer(delay, new ActionListener() {
 
@@ -79,14 +81,16 @@ public class GameArea extends JPanel implements KeyListener {
     }
 
     private void update() {
-        if (state == STATE_GAME_PLAY){
+        if (state == STATE_GAME_PLAY) {
             currentShape.update();
         }
     }
+
     // random new shape
-    public void setNextShape(){
+    public void setNextShape() {
         nextShape = shapes[random.nextInt(shapes.length)];
     }
+
     public void setCurrentShape() {
         // Create a new instance of the shape
         currentShape = new Shape(nextShape.getCoords(), this, nextShape.getColor());
@@ -94,13 +98,14 @@ public class GameArea extends JPanel implements KeyListener {
         currentShape.reset();
         checkoverGame();
     }
+
     // check game over
-    public void checkoverGame(){
-        int [] [] coords = currentShape.getCoords();
-        for (int row = 0; row < coords.length; row++){
-            for (int col = 0; col < coords[0].length; col++){
-                if (coords[row][col]!= 0){
-                    if (board[row + currentShape.getY()][col+currentShape.getX()] != null){
+    public void checkoverGame() {
+        int[][] coords = currentShape.getCoords();
+        for (int row = 0; row < coords.length; row++) {
+            for (int col = 0; col < coords[0].length; col++) {
+                if (coords[row][col] != 0) {
+                    if (board[row + currentShape.getY()][col + currentShape.getX()] != null) {
                         state = STATE_GAME_OVER;
                     }
                 }
@@ -115,24 +120,25 @@ public class GameArea extends JPanel implements KeyListener {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         currentShape.render(g);
-        //set the shape on the board
+        // set the shape on the board
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                 if (board[row][col] != null) {
                     g.setColor(board[row][col]);
                     g.fillRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 
-                // Draw a border around the square
+                    // Draw a border around the square
                     g.setColor(Color.BLACK); // Set the border color
-                    g.drawRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);;
+                    g.drawRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    ;
                 }
             }
         }
-        //show game over
+        // show game over
         if (state == STATE_GAME_OVER) {
             g.setColor(Color.WHITE);
             g.setFont(g.getFont().deriveFont(50.0f)); // Set the font size
-            g.drawString("Game Over!!", BOARD_WIDTH/2,(BLOCK_SIZE * BOARD_HEIGHT)/2);
+            g.drawString("Game Over!!", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
         }
         // show game pause
         if (state == STATE_GAME_PAUSE && countdown == 0) {
@@ -140,7 +146,7 @@ public class GameArea extends JPanel implements KeyListener {
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.WHITE);
             g.setFont(g.getFont().deriveFont(50.0f)); // Set the font size
-            g.drawString("Game Pause", BOARD_WIDTH /2,(BLOCK_SIZE * BOARD_HEIGHT)/2);
+            g.drawString("Game Pause", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
         }
         // draw the board
         g.setColor(Color.WHITE);
@@ -155,38 +161,36 @@ public class GameArea extends JPanel implements KeyListener {
         if (countdown > 0) {
             g.setColor(Color.WHITE);
             g.setFont(g.getFont().deriveFont(35.0f));
-            g.drawString("Resuming in " + countdown + "...", BOARD_WIDTH/2, (BLOCK_SIZE * BOARD_HEIGHT)/2);
+            g.drawString("Resuming in " + countdown + "...", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
         }
-         // Draw the preview of the next shape
+        // Draw the preview of the next shape
         showNextShapePreview(g);
-}
-private void showNextShapePreview(Graphics g) {
-    int[][] nextShapeCoords = nextShape.getCoords();
-    Color nextShapeColor = nextShape.getColor();
+    }
 
-    // Determine the position of the preview
-    int previewX = BOARD_WIDTH + 325;  
-    int previewY = 50; 
+    private void showNextShapePreview(Graphics g) {
+        int[][] nextShapeCoords = nextShape.getCoords();
+        Color nextShapeColor = nextShape.getColor();
 
-    for (int row = 0; row < nextShapeCoords.length; row++) {
-        for (int col = 0; col < nextShapeCoords[row].length; col++) {
-            if (nextShapeCoords[row][col] != 0) {
-                g.setColor(nextShapeColor);
-                g.fillRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-                g.setColor(Color.BLACK); // Set the border color
-                g.drawRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        // Determine the position of the preview
+        int previewX = BOARD_WIDTH + 325;
+        int previewY = 50;
+
+        for (int row = 0; row < nextShapeCoords.length; row++) {
+            for (int col = 0; col < nextShapeCoords[row].length; col++) {
+                if (nextShapeCoords[row][col] != 0) {
+                    g.setColor(nextShapeColor);
+                    g.fillRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    g.setColor(Color.BLACK); // Set the border color
+                    g.drawRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                }
             }
         }
     }
-}
-    public void startGame() {
-        setNextShape();
-        setCurrentShape();
-        state = STATE_GAME_PLAY;
-    }
+
     public Color[][] getBoard() {
         return board;
     }
+
     // game control
     @Override
     public void keyTyped(KeyEvent e) {
@@ -201,12 +205,12 @@ private void showNextShapePreview(Graphics g) {
             currentShape.moveLeft();
         } else if (e.getKeyCode() == KeyEvent.VK_D) {
             currentShape.moveRight();
-        } else if (e.getKeyCode() == KeyEvent.VK_W){
+        } else if (e.getKeyCode() == KeyEvent.VK_W) {
             currentShape.rotateShape();
         } // clean the board
-         else if (state == STATE_GAME_OVER &&  (e.getKeyCode() == KeyEvent.VK_ENTER)){
+        else if (state == STATE_GAME_OVER && (e.getKeyCode() == KeyEvent.VK_ENTER)) {
             for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[row].length; col++) {
+                for (int col = 0; col < board[row].length; col++) {
                     board[row][col] = null;
                 }
             }
@@ -215,36 +219,37 @@ private void showNextShapePreview(Graphics g) {
             state = STATE_GAME_PLAY;
         }
         // pause
-        if (e.getKeyCode() == KeyEvent.VK_P){
-            if (state == STATE_GAME_PLAY){
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            if (state == STATE_GAME_PLAY) {
                 state = STATE_GAME_PAUSE;
-            } else if (state == STATE_GAME_PAUSE){
-                if(countdown ==0){
-                        countdown = 3;
-                        new Timer(1000, new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                countdown --;
-                                if (countdown <= 0) {
-                                    // Unpause the game
-                                    state = STATE_GAME_PLAY;
-                                    ((Timer) e.getSource()).stop();
-                                }
+            } else if (state == STATE_GAME_PAUSE) {
+                if (countdown == 0) {
+                    countdown = 3;
+                    new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            countdown--;
+                            if (countdown <= 0) {
+                                // Unpause the game
+                                state = STATE_GAME_PLAY;
+                                ((Timer) e.getSource()).stop();
                             }
-                        }).start();
-                    }
-                    return;
-                    }
-                } 
-          // add drop immediately       
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && state == STATE_GAME_PLAY){
-            if(state == STATE_GAME_OVER){
+                        }
+                    }).start();
+                }
                 return;
             }
-                currentShape.immediatelyDrop();
-                currentShape.update();
-            }
         }
+        // add drop immediately
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (state == STATE_GAME_OVER) {
+                return;
+            }
+            currentShape.immediatelyDrop();
+            currentShape.update();
+        }
+    }
+
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_S) {
