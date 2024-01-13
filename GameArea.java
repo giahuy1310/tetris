@@ -54,6 +54,7 @@ public class GameArea extends JPanel implements KeyListener {
                 this, colors[6]); // O shape
 
         currentShape = shapes[0];
+
         // Lopper
         looper = new Timer(delay, new ActionListener() {
             int n = 0;
@@ -98,12 +99,11 @@ public class GameArea extends JPanel implements KeyListener {
         }
         // draw the board
         g.setColor(Color.WHITE);
-
         for (int row = 0; row < BOARD_HEIGHT; row++) {
-            g.drawLine(0, BLOCK_SIZE * row, BLOCK_SIZE * BOARD_WIDTH, BLOCK_SIZE * row);
+            g.drawLine(0, BLOCK_SIZE * row, BLOCK_SIZE * BOARD_WIDTH, BLOCK_SIZE * row); // draw the row
         }
         for (int col = 0; col < BOARD_WIDTH + 1; col++) {
-            g.drawLine(BLOCK_SIZE * col, 0, BLOCK_SIZE * col, BLOCK_SIZE * BOARD_HEIGHT);
+            g.drawLine(BLOCK_SIZE * col, 0, BLOCK_SIZE * col, BLOCK_SIZE * BOARD_HEIGHT); // draw the colum
         }
     }
 
