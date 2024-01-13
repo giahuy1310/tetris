@@ -196,6 +196,9 @@ private void showNextShapePreview(Graphics g) {
         setCurrentShape();
         state = STATE_GAME_PLAY;
     }
+    public void increaseScore(int value) {
+        score += value;
+    }
     public Color[][] getBoard() {
         return board;
     }

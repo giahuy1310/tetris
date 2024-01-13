@@ -4,7 +4,7 @@ import java.awt.*;
 class MainBoard extends JFrame {
     private JFrame frame;
     private Title title = new Title(this);
-    private int width = 445, height = 629;
+    private int width = 445, height = 625;
     private GameArea board = new GameArea();
 
     private static AudioPlayer audio = new AudioPlayer();
