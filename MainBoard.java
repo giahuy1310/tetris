@@ -1,27 +1,35 @@
 import javax.swing.*;
 import java.awt.*;
-class MainBoard extends JFrame{
+
+class MainBoard extends JFrame {
     private JFrame frame;
-    private Title title ;
+    private Title title = new Title(this);
     private int width = 445, height = 629;
     private GameArea board = new GameArea();
-    public MainBoard(){
+
+    private static AudioPlayer audio = new AudioPlayer();
+
+    public static void playBackgroundMusic() {
+        audio.playBackground();
+    }
+
+    public MainBoard() {
+
+        playBackgroundMusic();
+
         frame = new JFrame("Tetris");
         board = new GameArea();
-        title = new Title(this);
         frame.add(board);
-       
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setSize(width,height);
+        frame.setSize(width, height);
         frame.setLocationRelativeTo(null);
+
         frame.addKeyListener(board);
-        frame.add(title);
-        frame.addKeyListener(title);
-        
 
         frame.setVisible(true);
-        
+
     }
     public void startGame(){
         frame.remove(title);
@@ -35,6 +43,3 @@ class MainBoard extends JFrame{
         MainBoard main = new MainBoard();
     }
 }
-
-
-
