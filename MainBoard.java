@@ -13,6 +13,10 @@ class MainBoard extends JFrame {
         audio.playBackground();
     }
 
+    public static void playClearLineSound() {
+        audio.playClearLine();
+    }
+
     public MainBoard() {
 
         playBackgroundMusic();
