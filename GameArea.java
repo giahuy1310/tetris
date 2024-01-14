@@ -64,6 +64,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
 
 
     private int score = 0;
+    private int clearLines = 0;
 
     public GameArea() {
         // add the button to the game
@@ -252,7 +253,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         if (state == STATE_GAME_PAUSE && countdown == 0) {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(Color.RED);
+            g.setColor(Color.WHITE);
 
             g.setFont(new Font("Georgia", Font.BOLD, 35)); // Set the font size
             g.drawString("Game Paused", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
@@ -282,14 +283,14 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         // show count down when unpause
         if (countdown > 0) {
             g.setColor(Color.WHITE);
-            g.setFont(g.getFont().deriveFont(35.0f));
+            g.setFont(new Font("Georgia", Font.BOLD, 35));
             g.drawString("Resuming in " + countdown + "...", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
         }
         // Draw the preview of the next shape
         showNextShapePreview(g);
         // Draw the score
         g.setColor(Color.WHITE);
-        g.setFont(g.getFont().deriveFont(18.0f));
+        g.setFont(new Font("Georgia", Font.BOLD, 15));
         g.drawString("Score: " + score, BOARD_WIDTH + 300, 200);
     }
 
@@ -335,9 +336,15 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     }
 
     public void increaseScore(int value) {
-        score += value;
+        if (value <=200){
+        score += value*2;
+        } else score += value*2;
         MainBoard.playClearLineSound();
+        clearLines = 0;
 
+    }
+    public void increaseLines(int value) {
+        clearLines +=value;
     }
     
 

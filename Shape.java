@@ -109,7 +109,10 @@ public class Shape {
             }
             if (count < board.getBoard()[0].length) {
                 bottomLine--;
-            } else  board.increaseScore(100); 
+            } else { 
+                board.increaseScore(100); 
+                board.increaseLines(1);
+            }
         }
     }
 
