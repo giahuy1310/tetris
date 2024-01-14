@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.awt.Font;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 public class GameArea extends JPanel implements KeyListener, MouseListener, MouseMotionListener{
@@ -20,6 +21,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     public static int STATE_GAME_OVER = 2;
     public static int STATE_GAME_START = 3;
     private int countdown = 0;
+    private int n = 0;
     private static final long serialVersionUID = 1L;
 
     private BufferedImage pause, refresh;
@@ -162,10 +164,6 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         if (state == STATE_GAME_PLAY) {
             currentShape.update();
         }
-
-
-
-
     }
 
     // random new shape
@@ -189,6 +187,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
                 if (coords[row][col] != 0) {
                     if (board[row + currentShape.getY()][col + currentShape.getX()] != null) {
                         state = STATE_GAME_OVER;
+                        n =1;
                     }
                 }
             }
@@ -237,6 +236,17 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
             g.setFont(new Font("Georgia", Font.BOLD, 40)); // Set the font size
             g.drawString("Game Over!!", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
 
+        }
+
+        if (state == STATE_GAME_OVER && n == 1) {
+            n=0;
+            // Show a dialog asking for the player's name
+            String playerName = JOptionPane.showInputDialog("Enter your name:");
+            if (playerName != null && !playerName.isEmpty()) {
+                // Create a new Player object and add it to the leaderboard
+                Player player = new Player(playerName, score);
+                MainBoard.addPlayerToLeaderboard(player);
+            }
         }
         // show game pause
         if (state == STATE_GAME_PAUSE && countdown == 0) {
@@ -311,10 +321,8 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         looper.start();
         checkoverGame();
         gameOver =false;
-
-
-
     }
+
     public void stopGame() {
         score = 0;
 
@@ -331,12 +339,16 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         MainBoard.playClearLineSound();
 
     }
+    
 
     public Color[][] getBoard() {
         return board;
     }
     public int getState() {
         return state;
+    }
+    public int getScore() {
+        return score;
     }
 
     // game control
