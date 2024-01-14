@@ -336,15 +336,8 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     }
 
     public void increaseScore(int value) {
-        if (value <=200){
-        score += value*2;
-        } else score += value*2;
+        score += value;
         MainBoard.playClearLineSound();
-        clearLines = 0;
-
-    }
-    public void increaseLines(int value) {
-        clearLines +=value;
     }
     
 
