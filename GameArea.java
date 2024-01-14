@@ -48,7 +48,17 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     private Shape currentShape;
 
     private Timer looper;
+    private boolean gamePaused = false;
 
+    private boolean gameOver = false;
+    private boolean gamePlay = false;
+    private Timer buttonLapse = new Timer(300, new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            buttonLapse.stop();
+        }
+    });
 
     private int score = 0;
 
@@ -109,6 +119,16 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     }
 
     private void update() {
+        if (stopBounds.contains(mouseX, mouseY) && leftClick && !buttonLapse.isRunning() && !gameOver) {
+            buttonLapse.start();
+        }
+        if (refreshBounds.contains(mouseX, mouseY) && leftClick) {
+            startGame();
+        }
+
+        if (gamePaused || gameOver) {
+            return;
+        }
 
         if (state == STATE_GAME_PLAY) {
             currentShape.update();
@@ -178,17 +198,18 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         }
         // show game over
         if (state == STATE_GAME_OVER) {
-            g.setColor(Color.WHITE);
-            g.setFont(g.getFont().deriveFont(50.0f)); // Set the font size
-            g.drawString("Game Over!!", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
+            g.setColor(Color.white);
+            g.setFont(new Font("Georgia", Font.BOLD, 35)); // Set the font size
+            g.drawString("Game Over", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
+
         }
         // show game pause
         if (state == STATE_GAME_PAUSE && countdown == 0) {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(Color.WHITE);
-            g.setFont(g.getFont().deriveFont(50.0f)); // Set the font size
-            g.drawString("Game Pause", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
+            g.setColor(Color.RED);
+            g.setFont(new Font("Georgia", Font.BOLD, 35)); // Set the font size
+            g.drawString("Game Paused", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
         }
         // draw the board
         g.setColor(Color.WHITE);
@@ -236,7 +257,20 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     public void startGame() {
         setNextShape();
         setCurrentShape();
-        state = STATE_GAME_PLAY;
+        stopGame();
+        looper.start();
+
+
+    }
+    public void stopGame() {
+        score = 0;
+
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[row].length; col++) {
+                board[row][col] = null;
+            }
+        }
+        looper.stop();
     }
 
     public void increaseScore(int value) {
@@ -315,6 +349,16 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
             currentShape.speedDown();
         }
     }
+    class GameLooper implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            update();
+            repaint();
+        }
+
+    }
+
     @Override
     public void mouseDragged(MouseEvent e) {
         mouseX = e.getX();
