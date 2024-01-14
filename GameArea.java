@@ -121,6 +121,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     private void update() {
         if (stopBounds.contains(mouseX, mouseY) && leftClick && !buttonLapse.isRunning() && !gameOver) {
             buttonLapse.start();
+            gamePaused = !gamePaused;
         }
         if (refreshBounds.contains(mouseX, mouseY) && leftClick) {
             startGame();
@@ -259,6 +260,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         setCurrentShape();
         stopGame();
         looper.start();
+        gameOver = false;
 
 
     }

@@ -43,6 +43,8 @@ class MainBoard extends JFrame {
         frame.add(board);
         board.startGame();
         frame.revalidate();
+        frame.addMouseListener(board);
+        frame.addMouseMotionListener(board);
 
     }
     
