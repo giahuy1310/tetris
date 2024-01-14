@@ -12,6 +12,7 @@
 - Mainboard
 - Game Area
 - Shape
+- Leader board
 #### Bao Khuong:
 - Mainboard
 - Sound Effects
