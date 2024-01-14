@@ -39,11 +39,13 @@ public class Title extends JPanel implements KeyListener{
 
         g.setColor(Color.BLACK);
 
-        g.fillRect(0, 0, MainBoard.WIDTH, MainBoard.HEIGHT);
+        g.fillRect(0, 0, MainBoard.width, MainBoard.height);
         int x = MainBoard.WIDTH/2 - instructions.getWidth()/2 - 100;
         int y = 20 - instructions.getHeight() / 2 +50;
         System.out.println("Drawing instructions at: (" + x + ", " + y + ")");
-        g.drawImage(instructions, x, y, null);
+
+        g.drawImage(instructions, MainBoard.width/2 - instructions.getWidth()/2,
+                20 - instructions.getHeight() / 2 + 150, null);
 
 
         g.setColor(Color.WHITE);
