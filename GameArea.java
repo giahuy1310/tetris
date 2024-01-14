@@ -1,17 +1,33 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.security.Key;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.Random;
+import java.awt.Font;
 
-public class GameArea extends JPanel implements KeyListener {
+import javax.swing.JPanel;
+import javax.swing.Timer;
+public class GameArea extends JPanel implements KeyListener, MouseListener, MouseMotionListener{
     public static int STATE_GAME_PLAY = 0;
     public static int STATE_GAME_PAUSE = 1;
     public static int STATE_GAME_OVER = 2;
     private int countdown = 0;
+    private static final long serialVersionUID = 1L;
+
+    private BufferedImage pause, refresh;
+    private int mouseX, mouseY;
+
+    private boolean leftClick = false;
+
+    private Rectangle stopBounds, refreshBounds;
+
 
     private int state = STATE_GAME_PLAY;
 
@@ -33,9 +49,20 @@ public class GameArea extends JPanel implements KeyListener {
 
     private Timer looper;
 
+
     private int score = 0;
 
     public GameArea() {
+        // add the button to the game
+        pause = ImageLoader.loadImage("/Pause.png");
+        refresh = ImageLoader.loadImage("/Refresh.png");
+
+        mouseX = 0;
+        mouseY = 0;
+
+        stopBounds = new Rectangle(350, 500, pause.getWidth(), pause.getHeight() + pause.getHeight() / 2);
+        refreshBounds = new Rectangle(350, 500 - refresh.getHeight() - 20, refresh.getWidth(),
+                refresh.getHeight() + refresh.getHeight() / 2);
 
         random = new Random();
 
@@ -82,6 +109,7 @@ public class GameArea extends JPanel implements KeyListener {
     }
 
     private void update() {
+
         if (state == STATE_GAME_PLAY) {
             currentShape.update();
         }
@@ -121,6 +149,19 @@ public class GameArea extends JPanel implements KeyListener {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         currentShape.render(g);
+        // draw the button
+        if (stopBounds.contains(mouseX, mouseY)) {
+            g.drawImage(pause.getScaledInstance(pause.getWidth() + 3, pause.getHeight() + 3, BufferedImage.SCALE_DEFAULT), stopBounds.x + 3, stopBounds.y + 3, null);
+        } else {
+            g.drawImage(pause, stopBounds.x, stopBounds.y, null);
+        }
+
+        if (refreshBounds.contains(mouseX, mouseY)) {
+            g.drawImage(refresh.getScaledInstance(refresh.getWidth() + 3, refresh.getHeight() + 3,
+                    BufferedImage.SCALE_DEFAULT), refreshBounds.x + 3, refreshBounds.y + 3, null);
+        } else {
+            g.drawImage(refresh, refreshBounds.x, refreshBounds.y, null);
+        }
         // set the shape on the board
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
@@ -273,5 +314,45 @@ public class GameArea extends JPanel implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_S) {
             currentShape.speedDown();
         }
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            leftClick = true;
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            leftClick = false;
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

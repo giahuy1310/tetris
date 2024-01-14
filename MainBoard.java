@@ -3,7 +3,7 @@ import java.awt.*;
 
 class MainBoard extends JFrame {
     private JFrame frame;
-    private Title title = new Title(this);
+    private Title title;
     private int width = 445, height = 625;
     private GameArea board = new GameArea();
 
@@ -23,7 +23,8 @@ class MainBoard extends JFrame {
 
         frame = new JFrame("Tetris");
         board = new GameArea();
-        frame.add(board);
+        title = new Title(this);
+
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -33,6 +34,8 @@ class MainBoard extends JFrame {
         frame.addKeyListener(board);
 
         frame.setVisible(true);
+        frame.addKeyListener(title);
+        frame.add(title);
 
     }
     public void startGame(){
@@ -40,7 +43,7 @@ class MainBoard extends JFrame {
         frame.add(board);
         board.startGame();
         frame.revalidate();
-        frame.repaint();
+
     }
     
     public static void main(String[] args){
