@@ -34,8 +34,8 @@ class MainBoard extends JFrame {
         frame.addKeyListener(board);
 
         frame.setVisible(true);
-        frame.addKeyListener(title);
         frame.add(title);
+        frame.addKeyListener(title);
 
     }
     public void startGame(){
@@ -46,6 +46,9 @@ class MainBoard extends JFrame {
         frame.addMouseListener(board);
         frame.addMouseMotionListener(board);
 
+    }
+    public int getGameState() {
+        return board.getState();
     }
     
     public static void main(String[] args){

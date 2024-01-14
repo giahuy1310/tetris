@@ -18,6 +18,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     public static int STATE_GAME_PLAY = 0;
     public static int STATE_GAME_PAUSE = 1;
     public static int STATE_GAME_OVER = 2;
+    public static int STATE_GAME_START = 3;
     private int countdown = 0;
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +30,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     private Rectangle stopBounds, refreshBounds;
 
 
-    private int state = STATE_GAME_PLAY;
+    private int state = STATE_GAME_START;
 
     private static int FPS = 60;
     private static int delay = 1000 / FPS;
@@ -66,6 +67,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         // add the button to the game
         pause = ImageLoader.loadImage("/Pause.png");
         refresh = ImageLoader.loadImage("/Refresh.png");
+        state = STATE_GAME_START;
 
         mouseX = 0;
         mouseY = 0;
@@ -143,7 +145,13 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
 
         }
         if (refreshBounds.contains(mouseX, mouseY) && leftClick) {
-            startGame();
+            if(state == STATE_GAME_PAUSE){
+                if(countdown == 0){
+                state = STATE_GAME_PLAY;
+                startGame();
+            } else return;
+            }
+            else startGame();
         }
 
         if (gamePaused || gameOver) {
@@ -217,7 +225,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
                     // Draw a border around the square
                     g.setColor(Color.BLACK); // Set the border color
                     g.drawRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-                    ;
+                    
                 }
             }
         }
@@ -226,8 +234,8 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         // show game over
         if (state == STATE_GAME_OVER) {
             g.setColor(Color.white);
-            g.setFont(new Font("Georgia", Font.BOLD, 35)); // Set the font size
-            g.drawString("Game Over", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
+            g.setFont(new Font("Georgia", Font.BOLD, 40)); // Set the font size
+            g.drawString("Game Over!!", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
 
         }
         // show game pause
@@ -235,8 +243,22 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.RED);
+
             g.setFont(new Font("Georgia", Font.BOLD, 35)); // Set the font size
             g.drawString("Game Paused", BOARD_WIDTH / 2, (BLOCK_SIZE * BOARD_HEIGHT) / 2);
+
+            if (stopBounds.contains(mouseX, mouseY)) {
+                g.drawImage(pause.getScaledInstance(pause.getWidth() + 3, pause.getHeight() + 3, BufferedImage.SCALE_DEFAULT), stopBounds.x + 3, stopBounds.y + 3, null);
+            } else {
+                g.drawImage(pause, stopBounds.x, stopBounds.y, null);
+            }
+    
+            if (refreshBounds.contains(mouseX, mouseY)) {
+                g.drawImage(refresh.getScaledInstance(refresh.getWidth() + 3, refresh.getHeight() + 3,
+                        BufferedImage.SCALE_DEFAULT), refreshBounds.x + 3, refreshBounds.y + 3, null);
+            } else {
+                g.drawImage(refresh, refreshBounds.x, refreshBounds.y, null);
+            }
         }
         // draw the board
         g.setColor(Color.WHITE);
@@ -274,7 +296,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
                 if (nextShapeCoords[row][col] != 0) {
                     g.setColor(nextShapeColor);
                     g.fillRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-                    g.setColor(Color.BLACK); // Set the border color
+                    g.setColor(Color.WHITE); // Set the border color
                     g.drawRect(previewX + col * BLOCK_SIZE, previewY + row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                 }
             }
@@ -282,9 +304,10 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     }
 
     public void startGame() {
+        stopGame();
+        state = STATE_GAME_PLAY;
         setNextShape();
         setCurrentShape();
-        stopGame();
         looper.start();
         checkoverGame();
         gameOver =false;
@@ -312,6 +335,9 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     public Color[][] getBoard() {
         return board;
     }
+    public int getState() {
+        return state;
+    }
 
     // game control
     @Override
@@ -328,18 +354,23 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         } else if (e.getKeyCode() == KeyEvent.VK_D) {
             currentShape.moveRight();
         } else if (e.getKeyCode() == KeyEvent.VK_W) {
+            if( state == STATE_GAME_PLAY){
             currentShape.rotateShape();
+        } else return;
         } // clean the board
-        else if (state == STATE_GAME_OVER && (e.getKeyCode() == KeyEvent.VK_ENTER)) {
-            for (int row = 0; row < board.length; row++) {
-                for (int col = 0; col < board[row].length; col++) {
-                    board[row][col] = null;
+        else if (e.getKeyCode() == KeyEvent.VK_ENTER){  
+            if (state == STATE_GAME_OVER){
+                for (int row = 0; row < board.length; row++) {
+                    for (int col = 0; col < board[row].length; col++) {
+                        board[row][col] = null;
+                    }
                 }
-            }
-            score = 0;
-            setNextShape();
-            setCurrentShape();
-            state = STATE_GAME_PLAY;
+                score = 0;
+                setNextShape();
+                setCurrentShape();
+                state = STATE_GAME_PLAY;
+             }
+             else return;
         }
         // pause
         if (e.getKeyCode() == KeyEvent.VK_P) {
@@ -365,11 +396,10 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         }
         // add drop immediately
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if (state == STATE_GAME_OVER) {
-                return;
-            }
+            if (state == STATE_GAME_PLAY) {
             currentShape.immediatelyDrop();
             currentShape.update();
+        } else return;
         }
     }
 

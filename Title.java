@@ -33,16 +33,18 @@ public class Title extends JPanel implements KeyListener{
         this.frame = frame;
 
     }
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         g.setColor(Color.BLACK);
 
         g.fillRect(0, 0, MainBoard.WIDTH, MainBoard.HEIGHT);
+        int x = MainBoard.WIDTH/2 - instructions.getWidth()/2 - 100;
+        int y = 20 - instructions.getHeight() / 2 +50;
+        System.out.println("Drawing instructions at: (" + x + ", " + y + ")");
+        g.drawImage(instructions, x, y, null);
 
-
-        g.drawImage(instructions, MainBoard.WIDTH/2 - instructions.getWidth()/2 +225,
-                20 - instructions.getHeight() / 2 +150, null);
 
         g.setColor(Color.WHITE);
         g.setFont(g.getFont().deriveFont(35.0f));
@@ -52,17 +54,19 @@ public class Title extends JPanel implements KeyListener{
         @Override
     public void keyTyped(KeyEvent e) {
             if(e.getKeyChar() == KeyEvent.VK_ENTER) {
+                if (frame.getGameState() == GameArea.STATE_GAME_START){
                 frame.startGame();
+                }
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     @Override
     public void keyReleased(KeyEvent e) {
-        
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     
