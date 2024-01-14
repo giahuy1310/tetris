@@ -51,7 +51,13 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     private boolean gamePaused = false;
 
     private boolean gameOver = false;
+    private Timer buttonLapse = new Timer(300, new ActionListener() {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            buttonLapse.stop();
+        }
+    });
 
 
     private int score = 0;
@@ -113,6 +119,33 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     }
 
     private void update() {
+        if (stopBounds.contains(mouseX, mouseY) && leftClick && !buttonLapse.isRunning() && !gameOver) {
+            buttonLapse.start();
+            if (state == STATE_GAME_PLAY) {
+                state = STATE_GAME_PAUSE;
+            } else if (state == STATE_GAME_PAUSE) {
+                if (countdown == 0) {
+                    countdown = 3;
+                    new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            countdown--;
+                            if (countdown <= 0) {
+                                // Unpause the game
+                                state = STATE_GAME_PLAY;
+                                ((Timer) e.getSource()).stop();
+                            }
+                        }
+                    }).start();
+                }
+                return;
+            }
+
+        }
+        if (refreshBounds.contains(mouseX, mouseY) && leftClick) {
+            startGame();
+        }
+
         if (gamePaused || gameOver) {
             return;
         }
@@ -254,6 +287,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
         stopGame();
         looper.start();
         checkoverGame();
+        gameOver =false;
 
 
 
@@ -371,37 +405,7 @@ public class GameArea extends JPanel implements KeyListener, MouseListener, Mous
     public void mouseClicked(MouseEvent e) {
         mouseX = e.getX();
         mouseX = e.getY();
-        //pause
-        if (stopBounds.contains(mouseX, mouseY)); {
-            if (state == STATE_GAME_PLAY) {
-                state = STATE_GAME_PAUSE;
-            } else if (state == STATE_GAME_PAUSE) {
-                if (countdown == 0) {
-                    countdown = 3;
-                    new Timer(1000, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            countdown--;
-                            if (countdown <= 0) {
-                                // Unpause the game
-                                state = STATE_GAME_PLAY;
-                                ((Timer) e.getSource()).stop();
-                            }
-                        }
-                    }).start();
-                }
-                return;
-            }
-
-        }
-        if (refreshBounds.contains(mouseX, mouseY)) {
-            startGame();
-        }
     }
-
-
-
-
 
 
 
